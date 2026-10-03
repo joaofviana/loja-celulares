@@ -1,0 +1,45 @@
+import { contextBridge, ipcRenderer } from 'electron'
+
+const api = {
+  dashboardResumo: () => ipcRenderer.invoke('dashboard:resumo'),
+  produtosListar: (filtros?: any) => ipcRenderer.invoke('produtos:listar', filtros),
+  produtosSalvar: (produto: any) => ipcRenderer.invoke('produtos:salvar', produto),
+  celularesListar: (filtros?: any) => ipcRenderer.invoke('celulares:listar', filtros),
+  celularesBuscarPorImei: (imei: string) => ipcRenderer.invoke('celulares:buscarPorImei', imei),
+  celularesCadastrar: (celular: any) => ipcRenderer.invoke('celulares:cadastrar', celular),
+  celularesHistorico: (id: number) => ipcRenderer.invoke('celulares:historico', id),
+  clientesListar: (busca?: string) => ipcRenderer.invoke('clientes:listar', busca),
+  clientesSalvar: (cliente: any) => ipcRenderer.invoke('clientes:salvar', cliente),
+  fornecedoresListar: () => ipcRenderer.invoke('fornecedores:listar'),
+  fornecedoresSalvar: (f: any) => ipcRenderer.invoke('fornecedores:salvar', f),
+  vendasCriar: (dados: any) => ipcRenderer.invoke('vendas:criar', dados),
+  vendasListar: (filtros?: any) => ipcRenderer.invoke('vendas:listar', filtros),
+  vendasDetalhe: (id: number) => ipcRenderer.invoke('vendas:detalhe', id),
+  caixaStatus: () => ipcRenderer.invoke('caixa:status'),
+  caixaAbrir: (valor: number, usuarioId: number) => ipcRenderer.invoke('caixa:abrir', valor, usuarioId),
+  caixaFechar: (dados: any) => ipcRenderer.invoke('caixa:fechar', dados),
+  caixaMovimentacoes: (caixaId: number) => ipcRenderer.invoke('caixa:movimentacoes', caixaId),
+  caixaAdicionarMovimento: (mov: any) => ipcRenderer.invoke('caixa:adicionarMovimento', mov),
+  contasPagarListar: (filtros?: any) => ipcRenderer.invoke('contasPagar:listar', filtros),
+  contasPagarSalvar: (conta: any) => ipcRenderer.invoke('contasPagar:salvar', conta),
+  contasPagarPagar: (id: number, valor: number, forma: string) => ipcRenderer.invoke('contasPagar:pagar', id, valor, forma),
+  contasReceberListar: (filtros?: any) => ipcRenderer.invoke('contasReceber:listar', filtros),
+  contasReceberReceber: (id: number, valor: number, forma: string) => ipcRenderer.invoke('contasReceber:receber', id, valor, forma),
+  comprasListar: () => ipcRenderer.invoke('compras:listar'),
+  comprasCriar: (compra: any) => ipcRenderer.invoke('compras:criar', compra),
+  relVendasPeriodo: (de: string, ate: string) => ipcRenderer.invoke('relatorios:vendasPeriodo', de, ate),
+  relProdutosMaisVendidos: (de: string, ate: string) => ipcRenderer.invoke('relatorios:produtosMaisVendidos', de, ate),
+  relFormasPagamento: (de: string, ate: string) => ipcRenderer.invoke('relatorios:formasPagamento', de, ate),
+  configObter: () => ipcRenderer.invoke('config:obter'),
+  configSalvar: (config: any) => ipcRenderer.invoke('config:salvar', config),
+  backupFazer: (pasta?: string) => ipcRenderer.invoke('backup:fazer', pasta),
+  backupRestaurar: () => ipcRenderer.invoke('backup:restaurar'),
+  backupEscolherPasta: () => ipcRenderer.invoke('backup:escolherPasta'),
+  categoriasListar: () => ipcRenderer.invoke('categorias:listar'),
+  login: (usuario: string, senha: string) => ipcRenderer.invoke('auth:login', usuario, senha),
+  usuariosListar: () => ipcRenderer.invoke('usuarios:listar'),
+}
+
+contextBridge.exposeInMainWorld('api', api)
+
+export type Api = typeof api
